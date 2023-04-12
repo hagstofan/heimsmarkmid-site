@@ -24,6 +24,9 @@ on:
   repository_dispatch:
     types: rebuild-production
 
+permissions:
+  contents: write
+
 jobs:
   build:
 
