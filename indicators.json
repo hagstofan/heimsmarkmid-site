@@ -1262,6 +1262,14 @@
           "status": "complete"
         },
         {
+          "id": "11-5-3",
+          "title": "(a) Damage to critical infrastructure and (b) number of disruptions to basic services, attributed to disasters",
+          "description": "",
+          "keywords": "",
+          "href": "/heimsmarkmid-site/11-5-3",
+          "status": "notstarted"
+        },
+        {
           "id": "11-6-1",
           "title": "Hlutfall fasts úrgangs frá þéttbýli sem er safnað saman með reglubundnum hætti og er fargað með viðunandi hætti sem hlutfall af heildarmagni fasts úrgangs í þéttbýli, eftir borgum.",
           "description": "",
@@ -1980,14 +1988,6 @@
           "keywords": "",
           "href": "/heimsmarkmid-site/17-6-1",
           "status": "complete"
-        },
-        {
-          "id": "17-6-2",
-          "title": "Fixed Internet broadband subscriptions per 100 inhabitants, by speed",
-          "description": "",
-          "keywords": "",
-          "href": "/heimsmarkmid-site/17-6-2",
-          "status": "notstarted"
         },
         {
           "id": "17-7-1",
