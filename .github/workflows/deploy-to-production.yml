@@ -21,8 +21,6 @@ on:
   push:
     branches:
       - master
-  repository_dispatch:
-    types: rebuild-production
 
 permissions:
   contents: write
