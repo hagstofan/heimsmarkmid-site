@@ -129,7 +129,7 @@ var translations = {
         <link res="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.3/css/fixedColumns.dataTables.min.css" crossorigin="">
-        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20230612133201">
+        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20230612140423">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
@@ -3163,7 +3163,7 @@ layout-config-builder
 
     
       try {
-        var currentValue = normalizeCurrentValue('computation_units', "");
+        var currentValue = normalizeCurrentValue('computation_units', "Hundraðshlutar (%)");
         var propertyEditor = editor.getEditor('root.computation_units');
         propertyEditor.setValue(null);
         propertyEditor.setValue(currentValue);
@@ -3397,7 +3397,7 @@ layout-config-builder
 
     
       try {
-        var currentValue = normalizeCurrentValue('graph_title', "global_indicators.11-5-3-title");
+        var currentValue = normalizeCurrentValue('graph_title', "(a) Skemmdir á mikilvægum innviðum og (b) fjöldi truflana á grunnþjónustu, sem rekja má til hamfara");
         var propertyEditor = editor.getEditor('root.graph_title');
         propertyEditor.setValue(null);
         propertyEditor.setValue(currentValue);
@@ -3441,7 +3441,7 @@ layout-config-builder
 
     
       try {
-        var currentValue = normalizeCurrentValue('indicator_name', "global_indicators.11-5-3-title");
+        var currentValue = normalizeCurrentValue('indicator_name', "(a) Skemmdir á mikilvægum innviðum og (b) fjöldi truflana á grunnþjónustu, sem rekja má til hamfara.");
         var propertyEditor = editor.getEditor('root.indicator_name');
         propertyEditor.setValue(null);
         propertyEditor.setValue(currentValue);
@@ -3471,7 +3471,7 @@ layout-config-builder
 
     
       try {
-        var currentValue = normalizeCurrentValue('national_geographical_coverage', "");
+        var currentValue = normalizeCurrentValue('national_geographical_coverage', "Ísland");
         var propertyEditor = editor.getEditor('root.national_geographical_coverage');
         propertyEditor.setValue(null);
         propertyEditor.setValue(currentValue);
@@ -3499,7 +3499,7 @@ layout-config-builder
 
     
       try {
-        var currentValue = normalizeCurrentValue('permalink', "");
+        var currentValue = normalizeCurrentValue('permalink', "/11-5-3/");
         var propertyEditor = editor.getEditor('root.permalink');
         propertyEditor.setValue(null);
         propertyEditor.setValue(currentValue);
@@ -3748,12 +3748,12 @@ layout-config-builder
 <script>translations['search'] = translations['search'] || {};
     translations['search']['search'] = 'Search';</script>
 
-<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20230612133201'></script>
+<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20230612140423'></script>
 
 
     
     
-    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20230612133201"></script><script>
+    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20230612140423"></script><script>
     new indicatorInit();
     new accessibilitySwitcher();
 </script>
