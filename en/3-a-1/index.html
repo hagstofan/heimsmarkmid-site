@@ -134,7 +134,7 @@ var translations = {
         <link res="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.3/css/fixedColumns.dataTables.min.css" crossorigin="">
-        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20230828153515">
+        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20230828155846">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
@@ -3100,7 +3100,7 @@ layout-indicator
   data-graphtargetlines="null"
   data-graphseriesbreaks="null"
   data-indicatordownloads="null"
-  data-dataschema="{&quot;fields&quot;:[{&quot;name&quot;:&quot;Year&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Year&quot;},{&quot;name&quot;:&quot;Group&quot;,&quot;type&quot;:&quot;string&quot;,&quot;constraints&quot;:{&quot;enum&quot;:[&quot;Never smoked&quot;,&quot;Quit smoking&quot;,&quot;Smoke less frequently than daily&quot;,&quot;Smoke daily&quot;,&quot;&quot;]},&quot;title&quot;:&quot;Group&quot;},{&quot;name&quot;:&quot;Value&quot;,&quot;type&quot;:&quot;number&quot;,&quot;title&quot;:&quot;Value&quot;}]}"
+  data-dataschema="{&quot;fields&quot;:[{&quot;name&quot;:&quot;Year&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Year&quot;},{&quot;name&quot;:&quot;Gender&quot;,&quot;type&quot;:&quot;string&quot;,&quot;constraints&quot;:{&quot;enum&quot;:[&quot;Male&quot;,&quot;Female&quot;,&quot;&quot;]},&quot;title&quot;:&quot;Gender&quot;},{&quot;name&quot;:&quot;Value&quot;,&quot;type&quot;:&quot;number&quot;,&quot;title&quot;:&quot;Value&quot;}]}"
   data-compositebreakdownlabel=""
   data-precision="[]"
 >
@@ -3131,15 +3131,325 @@ layout-indicator
   <div id="datatables">
 
     
+    <a href="https://hagstofan.github.io/heimsmarkmid-data/en/headline/3-a-1.csv" class="btn btn-primary btn-download" download="indicator_3-a-1.csv" tabindex="0" role="button">Download headline data (.csv)</a>
+    
     <a href="https://hagstofan.github.io/heimsmarkmid-data/en/data/3-a-1.csv" class="btn btn-primary btn-download" download='indicator_3-a-1.csv' tabindex='0' role='button'>Download source data (.csv)</a>
 
     <p class="no-js-disaggregation-hint">Download source data for disaggregations (.csv)</p>
 
     
-    <h3>No headline data available</h3>
+    <h3>Headline data</h3>
+    <table class="table-responsive table table-hover dataTable no-footer" role="grid">
+      <caption>Age-standardized prevalence of current tobacco use among persons aged 15 years and older</caption>
+      <thead>
+        
+        
+        <th scope="col">Year</th>
+        
+        
+        
+        <th scope="col" class="table-value">Value</th>
+        
+        
+      </thead>
+      <tbody>
+        
+        <tr>
+          
+          
+          <td>2000</td>
+          
+          
+          
+          <td class="table-value">26.97886448</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2001</td>
+          
+          
+          
+          <td class="table-value">26.84</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2002</td>
+          
+          
+          
+          <td class="table-value">25.98558711</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2003</td>
+          
+          
+          
+          <td class="table-value">26.15576843</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2004</td>
+          
+          
+          
+          <td class="table-value">24.90628905</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2005</td>
+          
+          
+          
+          <td class="table-value">23.37339412</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2006</td>
+          
+          
+          
+          <td class="table-value">22.92358804</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2007</td>
+          
+          
+          
+          <td class="table-value">23.04603027</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2008</td>
+          
+          
+          
+          <td class="table-value">21.45813435</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2009</td>
+          
+          
+          
+          <td class="table-value">18.8269073</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2010</td>
+          
+          
+          
+          <td class="table-value">18.49966056</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2011</td>
+          
+          
+          
+          <td class="table-value">19.00853578</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2012</td>
+          
+          
+          
+          <td class="table-value">17.40320688</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2013</td>
+          
+          
+          
+          <td class="table-value">17.14495953</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2014</td>
+          
+          
+          
+          <td class="table-value">16.15476665</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2015</td>
+          
+          
+          
+          <td class="table-value">14.33846154</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2016</td>
+          
+          
+          
+          <td class="table-value">14.38975944</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2017</td>
+          
+          
+          
+          <td class="table-value">12.89151158</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2018</td>
+          
+          
+          
+          <td class="table-value">12.36082708</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2019</td>
+          
+          
+          
+          <td class="table-value">11.27176158</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2020</td>
+          
+          
+          
+          <td class="table-value">10.55045872</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2021</td>
+          
+          
+          
+          <td class="table-value">10.09130683</td>
+          
+          
+        </tr>
+        
+        <tr>
+          
+          
+          <td>2022</td>
+          
+          
+          
+          <td class="table-value">8.930899609</td>
+          
+          
+        </tr>
+        
+      </tbody>
+    </table>
     
   </div>
 
+  
+  <div id="datatableFooter">
+    
+    <p>Source: Statistics Iceland</p>
+    
+    
+    <p>Geographical Area: Iceland</p>
+    
+    
+    <p>Unit of Measurement: Percentage (%)</p>
+    
+    
+    <p>Footnote: </p>
+    
+  </div>
   
 
 </div>
@@ -4563,12 +4873,12 @@ data-event-label="Change to indicator.sources tab"
 <script>translations['search'] = translations['search'] || {};
     translations['search']['search'] = 'Search';</script>
 
-<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20230828153515'></script>
+<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20230828155846'></script>
 
 
     
     
-    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20230828153515"></script><script>
+    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20230828155846"></script><script>
     new indicatorInit();
     new accessibilitySwitcher();
 </script>
