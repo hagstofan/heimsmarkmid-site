@@ -1224,7 +1224,7 @@
         {
           "id": "11-3-1",
           "title": "Ratio of land consumption rate to population growth rate",
-          "description": "Ratio of land consumption rate to population growth rate",
+          "description": "Ratio of land consumption rate to population growth rate. A value of 1 indicates that land consumption rate is equal to the population growth rate (a sustainable ratio). A value below 1 means that land consumption rate is lower than the population growth rate, which is also considered a sustainable ratio. A value that exceeds 1 means that land consumption rate is greater than the population growth rate, which can be interpreted as an undesirable and unsustainable development.",
           "keywords": "",
           "href": "/heimsmarkmid-site/en/11-3-1",
           "status": "complete"

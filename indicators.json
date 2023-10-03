@@ -1224,7 +1224,7 @@
         {
           "id": "11-3-1",
           "title": "Hlutfall milli landnýtingar og fólksfjölgunar.",
-          "description": "Hlutfall milli landnýtingar og fólksfjölgunar.",
+          "description": "Hlutfall milli landnýtingar og fólksfjölgunar. Ef gildið er 1 þá er landnýtingsvöxturinn jafn mikill og fólksfjölgunin og því í æskilegri þróun. Einnig er þróunin æskileg ef gildið fer undir 1, en þá er landnýtisvöxturinn minni en fólksfjölgunin. Aftur á móti ef gildið fer yfir 1 þá er landnýtingsvöxturinn meiri en fólksfjölgunin sem má túlka sem óæskilega þróun.",
           "keywords": "",
           "href": "/heimsmarkmid-site/11-3-1",
           "status": "complete"
