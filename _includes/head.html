@@ -16,6 +16,24 @@
         <!-- Title and meta description
         ================================================== -->
 
+	<link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900"
+        type="text/css">
+        <link rel="stylesheet" href="https://use.typekit.net/ewh2tqd.css">
+        
+        <style>
+         @font-face {
+            font-family: "hagstofa7";
+            src:url("//haxdev.s3.amazonaws.com/static/fonts/hagstofa7.eot");
+            src:url("//haxdev.s3.amazonaws.com/static/fonts/hagstofa7.eot%3F%23iefix") format("embedded-opentype"),
+            url("//haxdev.s3.amazonaws.com/static/fonts/hagstofa7.woff") format("woff"),
+            url("//haxdev.s3.amazonaws.com/static/fonts/hagstofa7.ttf") format("truetype"),
+            url("//haxdev.s3.amazonaws.com/static/fonts/hagstofa7.svg%23hagstofa7") format("svg");
+            font-weight: normal;
+            font-style: normal;
+        }
+        </style>
+        
         {% include title-tag.html %}
 
         {% if site.environment == 'staging' or include.noindex %}
@@ -51,21 +69,19 @@
           {%- endfor -%}
         {%- endif -%}
 
-        <!-- Matomo -->
-	<script>
-	  var _paq = window._paq = window._paq || [];
-	  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-	  _paq.push(['trackPageView']);
-	  _paq.push(['enableLinkTracking']);
-	  (function() {
-	    var u="https://hagstofa.matomo.cloud/";
-	    _paq.push(['setTrackerUrl', u+'matomo.php']);
-	    _paq.push(['setSiteId', '5']);
-	    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-	    g.async=true; g.src='//cdn.matomo.cloud/hagstofa.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
-	  })();
+        <script>
+		var _paq = window._paq = window._paq || [];
+		/* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		_paq.push(['trackPageView']);
+		_paq.push(['enableLinkTracking']);
+		(function() {
+			var u="https://hagstofa.matomo.cloud/";
+			_paq.push(['setTrackerUrl', u+'matomo.php']);
+			_paq.push(['setSiteId', '1']);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.async=true; g.src='//cdn.matomo.cloud/hagstofa.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+		})();
 	</script>
-	<!-- End Matomo Code -->
 
         {% include meta-tags.html %}
 

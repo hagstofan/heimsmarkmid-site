@@ -1,8 +1,12 @@
 {%- for language in site.languages -%}
 {%- assign language_abbreviation = site.languages_public[language] | default: language -%}
 {%- if language != page.language -%}
-<a href="{{ page.url_by_language[language] }}">
-    {{ page.t.languages[language] }}
+<a
+    id="link-button-language"
+    class="link-button"
+    href="{{ page.url_by_language[language] }}"
+>
+    <i class="picon-tungumal"></i>{{ page.t.languages[language] }}
 </a>
 {%- endif -%}
 {%- endfor -%}
