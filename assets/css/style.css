@@ -2735,14 +2735,14 @@ div#offcanvas-buttons {
     left: -100% !important; } }
 @font-face {
   font-family: "hagstofa";
-  src: url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.eot");
-  src: url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.eot?#iefix") format("embedded-opentype"), url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.woff") format("woff"), url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.tiff") format("truetype");
+  src: url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.eot");
+  src: url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.eot?#iefix") format("embedded-opentype"), url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.woff") format("woff"), url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/hagstofa.tiff") format("truetype");
   font-weight: normal;
   font-style: normal; }
 @font-face {
   font-family: 'icomoon';
-  src: url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.eot?aqhxaf");
-  src: url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.eot?aqhxaf#iefix") format("embedded-opentype"), url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.ttf?aqhxaf") format("truetype"), url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.woff?aqhxaf") format("woff"), url("http://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.svg?aqhxaf#icomoon") format("svg");
+  src: url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.eot?aqhxaf");
+  src: url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.eot?aqhxaf#iefix") format("embedded-opentype"), url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.ttf?aqhxaf") format("truetype"), url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.woff?aqhxaf") format("woff"), url("https://hagstofas3bucket.hagstofa.is/haxdev/static/fonts/icomoon.svg?aqhxaf#icomoon") format("svg");
   font-weight: normal;
   font-style: normal; }
 [class^="picon"] {
