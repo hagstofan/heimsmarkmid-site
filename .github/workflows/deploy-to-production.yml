@@ -22,7 +22,7 @@ on:
     branches:
       - master
   repository_dispatch:
-    types: rebuild-production
+    types: rebuild-production-dev
 
 permissions:
   contents: write
