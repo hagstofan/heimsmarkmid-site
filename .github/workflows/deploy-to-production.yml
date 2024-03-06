@@ -46,11 +46,3 @@ jobs:
         bundle config path vendor/bundle
         bundle install
         JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config_prod.yml
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-        REPOSITORY_NAME: hagstofan/heimsmarkmid-prod
-        ACCESS_TOKEN: ${{ secrets.HAGSTOFA_PROD }}
-        BRANCH: main
-        FOLDER: _site
-        CLEAN: true
