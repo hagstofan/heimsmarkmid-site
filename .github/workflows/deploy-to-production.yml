@@ -21,8 +21,7 @@ on:
   push:
     branches:
       - master
-  repository_dispatch:
-    types: rebuild-production
+  workflow_dispatch:
 
 permissions:
   contents: write
