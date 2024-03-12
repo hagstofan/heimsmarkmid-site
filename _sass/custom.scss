@@ -119,6 +119,7 @@ header.hagstofa {
       margin-right: 21px;
       font-weight: 300;
       font-size: 17px;
+      display: none;
     }
 
     .link-button {
@@ -354,9 +355,13 @@ footer.hagstofa {
   #mobile-main-text {
     display: none;
   }
+
+  header.hagstofa .upper-desktop-navbar #link-button-visar {
+    display: flex;
+  }
 }
 
-@media only screen and (max-width: 992px) {
+@media (max-width: 992px) {
   .header-search-bar {
       width: 100% !important;
   }
