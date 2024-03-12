@@ -2696,7 +2696,8 @@ header.hagstofa {
     header.hagstofa .upper-desktop-navbar #link-button-visar {
       margin-right: 21px;
       font-weight: 300;
-      font-size: 17px; }
+      font-size: 17px;
+      display: none; }
     header.hagstofa .upper-desktop-navbar .link-button {
       margin-top: 20px;
       border: none;
@@ -2848,7 +2849,10 @@ footer.hagstofa {
     display: block; }
 
   #mobile-main-text {
-    display: none; } }
-@media only screen and (max-width: 992px) {
+    display: none; }
+
+  header.hagstofa .upper-desktop-navbar #link-button-visar {
+    display: flex; } }
+@media (max-width: 992px) {
   .header-search-bar {
     width: 100% !important; } }
