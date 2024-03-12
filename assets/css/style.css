@@ -2822,6 +2822,33 @@ footer.hagstofa {
     footer.hagstofa #certs img {
       max-width: 100%; }
 
+#main-text {
+  display: none; }
+
+#mobile-main-text {
+  font-family: adelle-sans, sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #0B404E;
+  padding-bottom: 4px;
+  width: 100%; }
+
+#mobile-main-text::after {
+  display: table;
+  content: " ";
+  clear: both; }
+
 @media (min-width: 1500px) {
   footer.hagstofa .container {
     width: auto !important; } }
+@media (min-width: 992px) {
+  #main-text {
+    display: block; }
+
+  #mobile-main-text {
+    display: none; } }
+@media only screen and (max-width: 992px) {
+  .header-search-bar {
+    width: 100% !important; } }

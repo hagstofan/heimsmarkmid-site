@@ -131,7 +131,7 @@ var translations = {
         <link res="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.3/css/fixedColumns.dataTables.min.css" crossorigin="">
-        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20240308152806">
+        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20240312160639">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
           integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
           crossorigin=""/>
@@ -178,15 +178,15 @@ layout-indicator
 </div><header class="hagstofa">
     <div class="container">
         <div class="row">
-            <div class="brand col-md-4">
+            <div class="brand col-6 col-lg-4">
                 <a href="https://hagstofa.is/">
                     <img src="/heimsmarkmid-site/assets/img/header_brand_is.svg" alt="Hagstofa Íslands" />
                 </a>
             </div>
-            <div class="header-text col-md-4">
+            <div id="main-text" class="header-text col-4">
                 Heimsmarkmiðin
             </div>
-            <div class="header-language col-md-4">
+            <div class="header-language col-6 col-lg-4">
                 <div class="upper-desktop-navbar">
                     <a id="link-button-language" class="link-button" href="/heimsmarkmid-site/en/">
                         <i class="picon-tungumal"></i>
@@ -201,6 +201,7 @@ layout-indicator
     </div>
 </header><div class="container">
     <nav class="navbar navbar-expand-lg navbar-light flex-wrap align-items-start">
+        <div id="mobile-main-text">Heimsmarkmiðin</div>
         <a class="navbar-brand" href="/heimsmarkmid-site/" id="home" aria-label="Til heimasíðu" title="Til heimasíðu">
     <img src="/heimsmarkmid-site/assets/img/SDG_logo.png" alt="Heimsmarkmið - 17 markmið til að breyta heiminum." />
 </a>
@@ -1654,12 +1655,12 @@ data-event-label="Change to indicator.sources tab"
 <script>translations['search'] = translations['search'] || {};
     translations['search']['search'] = 'Leit';</script>
 
-<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20240308152806'></script>
+<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20240312160639'></script>
 
 
     
     
-    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20240308152806"></script><script>
+    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20240312160639"></script><script>
     new indicatorInit();
     new accessibilitySwitcher();
 </script>
