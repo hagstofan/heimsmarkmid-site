@@ -15,7 +15,7 @@
 
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light flex-wrap align-items-start">
-        <div id="mobile-main-text">{%- if page.language == "en" -%}Sustainable Development Goals{%- else -%}Heimsmarkmiðin{%- endif -%}</div>
+        {%- if page.language == "is" -%}<div id="mobile-main-text">Heimsmarkmiðin</div>{%- endif -%}
         {% include components/header/logo.html %}
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ page.t.header.show_menu }}">
             <span class="navbar-toggler-icon"></span>
