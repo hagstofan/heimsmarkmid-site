@@ -348,16 +348,14 @@ footer.hagstofa {
 }
 
 @media (min-width: 992px) {
-  #main-text {
-    display: block;
-  }
-
-  #mobile-main-text {
-    display: none;
-  }
-
   header.hagstofa .upper-desktop-navbar #link-button-visar {
     display: flex;
+  }
+}
+
+@media (min-width: 1200px) {
+  #main-text {
+    display: block;
   }
 }
 
