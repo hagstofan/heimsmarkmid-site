@@ -2671,7 +2671,7 @@ header.hagstofa {
     height: 59px;
     padding-top: 17px;
     padding-left: 2px; }
-  header.hagstofa .header-text {
+  header.hagstofa .header-text, header.hagstofa .header-text a {
     font-family: adelle-sans, sans-serif;
     font-weight: 600;
     font-size: 24px;
@@ -2680,6 +2680,8 @@ header.hagstofa {
     letter-spacing: 0.12em;
     color: #0B404E;
     padding-top: 21px; }
+  header.hagstofa .header-text a:hover {
+    text-decoration: none; }
   header.hagstofa .upper-desktop-navbar {
     float: right; }
     header.hagstofa .upper-desktop-navbar a {
@@ -2844,12 +2846,21 @@ footer.hagstofa {
 @media (min-width: 1500px) {
   footer.hagstofa .container {
     width: auto !important; } }
+#main-text-content-en {
+  display: none; }
+
+@media (min-width: 1200px) {
+  #main-text-content-en {
+    display: inline; } }
 @media (min-width: 992px) {
+  #main-text {
+    display: block; }
+
+  #mobile-main-text {
+    display: none; }
+
   header.hagstofa .upper-desktop-navbar #link-button-visar {
     display: flex; } }
-@media (min-width: 1200px) {
-  #main-text {
-    display: block; } }
-@media (max-width: 992px) {
+@media (max-width: 991px) {
   .header-search-bar {
     width: 100% !important; } }
