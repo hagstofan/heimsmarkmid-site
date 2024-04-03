@@ -86,7 +86,7 @@ header.hagstofa {
     }
   }
 
-  .header-text {
+  .header-text, .header-text a {
     font-family: adelle-sans, sans-serif;
     font-weight: 600;
     font-size: 24px;
@@ -95,6 +95,10 @@ header.hagstofa {
     letter-spacing: 0.12em;
     color: #0B404E;
     padding-top: 21px;
+  }
+
+  .header-text a:hover {
+    text-decoration: none;
   }
 
   .upper-desktop-navbar {
@@ -347,19 +351,31 @@ footer.hagstofa {
   }
 }
 
+#main-text-content-en {
+    display: none;
+}
+
+@media (min-width: 1200px) {
+  #main-text-content-en {
+    display: inline;
+  }
+}
+
 @media (min-width: 992px) {
+  #main-text {
+    display: block;
+  }
+
+  #mobile-main-text {
+    display: none;
+  }
+
   header.hagstofa .upper-desktop-navbar #link-button-visar {
     display: flex;
   }
 }
 
-@media (min-width: 1200px) {
-  #main-text {
-    display: block;
-  }
-}
-
-@media (max-width: 992px) {
+@media (max-width: 991px) {
   .header-search-bar {
       width: 100% !important;
   }
