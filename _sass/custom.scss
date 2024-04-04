@@ -351,6 +351,16 @@ footer.hagstofa {
   }
 }
 
+#main-text-content-en {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  #main-text-content-en {
+    display: inline;
+  }
+}
+
 @media (min-width: 992px) {
   #main-text {
     display: block;
