@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="is" class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=Promise%2CArray.prototype.forEach%2CString.prototype.includes%2CURLSearchParams%2CCustomEvent%2CArray.prototype.includes%2CArray.prototype.filter%2CArray.prototype.some%2CArray.prototype.find%2CArray.prototype.reduce%2CObject.assign%2CArray.isArray%2CObject.values%2CObject.entries%2CArray.from%2CSet%2CArray.prototype.findIndex"></script>
+<script crossorigin="anonymous" src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.15.0/js/canvas-to-blob.min.js"></script>
+
+        <script>
+// This is where we initialise any global variables, namespaced in "opensdg".
+var opensdg = {
+
+  // A base URL for asynchronous calls to SDG data.
+  remoteDataBaseUrl: 'https://hagstofan.github.io/heimsmarkmid-data/is',
+
+  chartConfigAlterations: [],
+  // A hook which can be used to modify the configuration for Chart.js.
+  chartConfigAlter: function(callback) {
+    this.chartConfigAlterations.push(callback);
+  },
+
+  tableConfigAlterations: [],
+  // A hook which can be used to modify the configuration for Datatables.
+  tableConfigAlter: function(callback) {
+    this.tableConfigAlterations.push(callback);
+  },
+
+  // A hook which can be replaced to alter whether/how the values that are
+  // displayed on indicator tables/graphs get rounded. A "context" parameter
+  // is also passed which contains additional information.
+  dataRounding: function(value, context) {
+    // Alterations go here.
+    return value;
+  },
+
+  // A hook which can be used to alter the data before it is displayed on charts/tables.
+  dataDisplayAlterations: [],
+  dataDisplayAlter: function(callback) {
+    this.dataDisplayAlterations.push(callback);
+  },
+
+  // Disaggregations which should be ignored on indicator pages.
+  ignoredDisaggregations: null,
+
+  language: 'is',
+};
+
+</script>
+
+        <script>
+// JavaScript container for translation data.
+var translations = {
+  //Javascript version of the "t" filter from jekyll-open-sdg-plugins.
+  t: function(key) {
+
+    if (!key || typeof key !== 'string') {
+      return '';
+    }
+
+    // The majority of uses of this function are to translate disaggregation
+    // data. To spare data providers of needing to enter "data." in front of
+    // their disaggregation data, we specifically look for that here.
+    if (typeof this.data === 'object' && this.data !== null && this.data[key]) {
+      return this.data[key];
+    }
+
+    var originalKey = key;
+    var drilled = this;
+    var levelsDrilled = 0;
+    var levels = key.split('.');
+
+    for (var level in levels) {
+      // If we have drilled down to soon, abort.
+      if (typeof drilled !== 'object') {
+        break;
+      }
+
+      if (levels[level] in drilled) {
+        drilled = drilled[levels[level]];
+        levelsDrilled += 1;
+      }
+    }
+
+    // If we didn't drill the right number of levels, return the original string.
+    if (levels.length != levelsDrilled) {
+      return originalKey;
+    }
+
+    // Otherwise we must have drilled all the way.
+    return drilled;
+  },
+};
+</script>
+
+        <!-- Basic Page Needs
+        ================================================== -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"><!-- Mobile Specific Metas
+        ================================================== -->
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Title and meta description
+        ================================================== -->
+        
+        
+    <title>
+        
+        Mælikvarði 8.9.2 -
+        
+        Employed persons in the tourism industries - Mælikvarðar fyrir heimsmarkmið Sameinuðu þjóðanna um sjálfbæra þróun
+    </title>
+
+
+
+        
+        <meta name="robots" content="noindex, nofollow">
+        
+
+        <!--[if IE 9]>
+        <script src="/heimsmarkmid-site/assets/js/lib/classList.js"></script>
+        <![endif]-->
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/heimsmarkmid-site/assets/img/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/heimsmarkmid-site/assets/img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/heimsmarkmid-site/assets/img/favicons/favicon-16x16.png">
+<link rel="icon" type="image/x-icon" href="/heimsmarkmid-site/assets/img/favicons/favicon.ico" />
+
+
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link res="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.3/css/fixedColumns.dataTables.min.css" crossorigin="">
+        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/style.css?v=20250506163430">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          crossorigin=""/>
+        <link rel="stylesheet" href="https://use.typekit.net/ewh2tqd.css">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/socib/Leaflet.TimeDimension/master/dist/leaflet.timedimension.control.min.css"  crossorigin=""/>
+        <link rel="stylesheet" href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css'  crossorigin=""/>
+        <link rel="stylesheet" href="https://bowercdn.net/c/leaflet.zoomhome-latest/dist/leaflet.zoomhome.css"  crossorigin=""/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-search@2.9.7/dist/leaflet-search.min.css" crossorigin="">
+        <link rel="stylesheet" href="https://cdn.kiprotect.com/klaro/v0.7/klaro.min.css" crossorigin=""/><!-- Matomo -->
+	<script>
+	  var _paq = window._paq = window._paq || [];
+	  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+	  _paq.push(['trackPageView']);
+	  _paq.push(['enableLinkTracking']);
+	  (function() {
+	    var u="https://hagstofa.matomo.cloud/";
+	    _paq.push(['setTrackerUrl', u+'matomo.php']);
+	    _paq.push(['setSiteId', '5']);
+	    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+	    g.async=true; g.src='https://cdn.matomo.cloud/hagstofa.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+	  })();
+	</script>
+	<!-- End Matomo Code -->
+
+        
+
+
+        <!--[if IE]>
+        <link rel="stylesheet" href="/heimsmarkmid-site/assets/css/ie.css">
+        <![endif]-->
+	
+        
+
+    </head>
+<body class="language-is
+layout-indicator
+">
+<!-- <div class="container"> -->
+
+<script>translations['header'] = {"alpha":"Alpha","default_contrast":"Sjálfgefin birtuskil","disable_high_contrast":"Afvelja skörp birtuskil","disclaimer":"Þessi síða er í þróun við This is a development website. Við þiggjum með þökkum <a href=\"mailto:%email_address\">ábendingar</a> um endurbætur.","enable_high_contrast":"Velja skörp birtuskil","hide_menu":"Fela valmyndir","high_contrast":"Skörp birtuskil","internet_explorer_message":"We have detected that you are using Internet Explorer to visit this website. Internet Explorer is now being phased out by Microsoft. As a result, this website no longer supports any version of Internet Explorer. Some features on this site will not work. You should use a modern browser such as Edge, Chrome, Firefox, or Safari. If you have difficulty installing or accessing a different browser, please contact your IT support team.","internet_explorer_message_title":"Ekki lengur stutt við þennan vefvafra","logo_title":"Til heimasíðu","show_menu":"Sýna valmyndir","skip_link":"Aftur á aðalsíðu","tag_line":"17 markmið til að breyta heiminum.","toggle_menu":"Valmynd. Smelltu til að stækka eða draga saman valmyndina","toggle_search":"Leita. Smelltu til að stækka eða draga saman leitarstikuna"};</script>
+
+<a class="sr-only-focusable" id="skiplink" href="#main-content" tabindex="0">Aftur á aðalsíðu</a>
+<div class="container internet-explorer-message">
+    <h2 class="internet-explorer-message-title">Ekki lengur stutt við þennan vefvafra</h2>
+    <p class="internet-explorer-message-body">We have detected that you are using Internet Explorer to visit this website. Internet Explorer is now being phased out by Microsoft. As a result, this website no longer supports any version of Internet Explorer. Some features on this site will not work. You should use a modern browser such as Edge, Chrome, Firefox, or Safari. If you have difficulty installing or accessing a different browser, please contact your IT support team.</p>
+</div><header class="hagstofa">
+    <div class="container">
+        <div class="row">
+            <div class="brand col-6 col-lg-4">
+                <a href="https://hagstofa.is/">
+                    <img src="/heimsmarkmid-site/assets/img/header_brand_is.svg" alt="Hagstofa Íslands" />
+                </a>
+            </div>
+            <div id="main-text" class="header-text col-4">
+                Heimsmarkmiðin
+            </div>
+            <div class="header-language col-6 col-lg-4">
+                <div class="upper-desktop-navbar">
+                    <a id="link-button-language" class="link-button" href="/heimsmarkmid-site/en/">
+                        <i class="picon-tungumal"></i>
+                        English
+                    </a>
+                    <a id="link-button-visar" class="link-button" href="https://hagstofa.is/visar/">
+                        Aðrir vísar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light flex-wrap align-items-start">
+        <div id="mobile-main-text">Heimsmarkmiðin</div>
+        <a class="navbar-brand" href="/heimsmarkmid-site/" id="home" aria-label="Til heimasíðu" title="Til heimasíðu">
+    <img src="/heimsmarkmid-site/assets/img/SDG_logo.png" alt="Heimsmarkmið - 17 markmið til að breyta heiminum." />
+</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Sýna valmyndir">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-flex flex-wrap w-100 justify-content-between">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav" id="menu"><li class="nav-item ">
+    <a class="nav-link" href="/heimsmarkmid-site/goals">Markmiðin</a>
+</li><li class="nav-item ">
+    <a class="nav-link" href="/heimsmarkmid-site/reporting-status">Staða birtingar</a>
+</li><li class="nav-item ">
+    <a class="nav-link" href="/heimsmarkmid-site/about">Um síðuna</a>
+</li><li class="nav-item ">
+    <a class="nav-link" href="/heimsmarkmid-site/faq">Algengar spurningar</a>
+</li></ul>
+    
+            </div>
+            <div class="header-search-bar">
+                <form class="align-self-lg-end" id="search" action="/heimsmarkmid-site/search/">
+    <div class="input-group">
+        <label class="visually-hidden" for="indicator_search">Leit</label>
+        <input class="form-control" type="search" name="q" id="indicator_search" title="Leit">
+        <span class="input-group-append">
+            <button class="btn btn-outline-secondary ms-n5" aria-label="Leita á vefsíðu" id="search-btn" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
+</form>
+
+            </div>
+        </div>
+    </nav>
+</div>
+</header>
+<div id="top" tabindex=-1></div>
+
+
+<script type="text/template" id="item_template">
+  <% _.each(fields, function(fieldItem) { %>
+    <div class="variable-selector
+      <% if(allowedFields.indexOf(fieldItem.field) == -1) { %> disallowed <% }%>
+      <% if (typeof childFields !== 'undefined' && childFields.indexOf(fieldItem.field) !== -1) { %> child <% }%>
+      "
+      data-field="<%=fieldItem.field%>"
+    >
+      <button class='accessBtn' tabindex='0' aria-expanded='false'
+        <% if(allowedFields.indexOf(fieldItem.field) == -1) { %>
+        aria-describedby='variable-hint-<%=fieldItem.field.replace(/ /g, '-')%>'
+        <% }%>
+      >
+        <% if(allowedFields.indexOf(fieldItem.field) == -1) { %><h6><% } else { %><h5><% } %>
+          <span aria-hidden="true"><%=translations.t(fieldItem.label)%><i class="fa fa-chevron-down"></i></span>
+          <span class="sr-only">Sýna undirflokka: <%=translations.t(fieldItem.label)%></span>
+        <% if(allowedFields.indexOf(fieldItem.field) == -1) { %></h6><% } else { %></h5><% } %>
+      </button>
+      <div class="variable-options">
+        <fieldset>
+          <legend class="sr-only">Undirflokkar - <%=translations.t(fieldItem.field)%></legend>
+          <div>
+            <button data-type="select">Velja allt</button>
+            <button data-type="clear">Hreinsa allt</button>
+          </div>
+          <% _.each(fieldItem.values, function(item) { %>
+            <label>
+              <input type="checkbox" <%=item.checked ? 'checked' : ''%> value="<%=item.value%>" data-field="<%=fieldItem.field%>" /><%=translations.t(item.value)%>
+            </label>
+          <% }); %>
+        </fieldset>
+      </div>
+
+      <% if(allowedFields.indexOf(fieldItem.field) == -1) { %>
+        <div class="variable-hint" id="variable-hint-<%=fieldItem.field.replace(/ /g, '-')%>">Í boði þegar '<%= translations.t(_.find(edges, { To: fieldItem.field }).From) %>' er valið
+        </div>
+        <div class="no-data-hint" id="no-data-hint-<%=fieldItem.field.replace(/ /g, '-')%>">
+          Engir valmöguleikar í boði vegna síunar
+        </div>
+      <% }%>
+
+    </div>
+  <% }); %>
+</script>
+
+<script type="text/template" id="units_template">
+  
+  <% if(units.length > 1) { %>
+  
+    <h4>Eining</h4>
+    <fieldset>
+      <legend class="sr-only">Eining</legend>
+      <% _.each(units, function(unitsItem, index) { %>
+        <% var checked = (selectedUnit) ? (selectedUnit==unitsItem) : (index==0); %>
+        <label><input type="radio" name="unit" value="<%=unitsItem%>" tabindex=0 <%=checked ? 'checked' : ''%> /> <%=translations.t(unitsItem)%></label>
+      <% }); %>
+    </fieldset>
+  
+  <% } %>
+  
+</script>
+
+<script type="text/template" id="series_template">
+  
+  <% if(serieses.length > 1) { %>
+  
+    <h4>Samfelld röð</h4>
+    <fieldset>
+      <legend class="sr-only">Samfelld röð</legend>
+      <% _.each(serieses, function(seriesItem, index) { %>
+        <% var checked = (selectedSeries) ? (selectedSeries==seriesItem) : (index==0); %>
+        <label><input type="radio" name="series" value="<%=seriesItem%>" tabindex=0 <%=checked ? 'checked' : ''%> /> <%=translations.t(seriesItem)%></label>
+      <% }); %>
+    </fieldset>
+  
+  <% } %>
+  
+</script>
+
+<script>translations['indicator'] = {"announce_data_added":"Graf og tafla hafa verið uppfærð","announce_data_not_available":"Graf og tafla sýna engin gögn","announce_data_removed":"Graf og tafla hafa verið uppfærð","apply":"Velja","cancel":"Hætta við","change_breakdowns":"Breyta niðurbroti","chart":"Graf","chart_annotation":"Skýring myndrits","clear_all":"Hreinsa allt","clear_selections":"Hreinsa val","data_not_available":"Sem stendur eru umbeðin gögn ekki tiltæk","data_tabular_alternative":"Veldu flipann merkt 'Tafla' til að sjá gögn í töfluformi","dataset_size_warning":"Það eru of mikil gögn til að sýna á grafi. Ekki er hægt að sýna öll gögn fyrr en völdum gögnum hefur verið fækkað","download_chart":"Sækja graf CSV","download_chart_image":"Sækja graf (.png)","download_chart_image_title":"Sækja graf sem mynd (.png)","download_csv":"Sækja CSV","download_csv_title":"Sækja sem CSV","download_headline":"Sækja gögn CSV","download_headline_title":"Sækja gögn sem CSV","download_source":"Sækja grunn CSV","download_source_for_disaggregations":"Sækja gögn fyrir sundurliðun CSV (.csv)","download_source_title":"Sækja grunngögn sem CSV","download_table":"Sækja töflu CSV","edit":"Breyta","edit_configuration":"Breyta stillingum","edit_data":"Breyta gögnum","edit_metadata":"Breyta lýsigögnum","empty_metadata_placeholder":"Ekki tiltækt fyrir þennan mælikvarða","empty_metadata_placeholder_sources":"Gögn ekki tiltæk","footnote":"Neðanmálsgrein","geographical_area":"Svæði","global_metadata":"Alþjóðleg lýsigögn","global_metadata_blurb":"Þessi tafla sýnir lýsigögn fyrir heimsmarkmiðamælikvarða eins og þeir eru skilgreindir af tölfræðistofnun Sameinuðu þjóðanna. <a href=\"https://unstats.un.org/sdgs/metadata/\"> Fullbúin alþjóðleg lýsigögn </a> eru fáanleg frá tölfræðistofnun Sameinuðu þjóðanna","headline_data":"Gögn","legend_help":"Smellið á skýringar til að fjarlægja einstakar línur úr grafinu.","loading":"Hleð","loading_map":"Hleð korti","map":"Kort","map_fullscreen":"Sýna kort í fullri stærð","map_fullscreen_exit":"Loka korti í fullri stærð","map_search":"Kortaleit","map_search_cancel":"Hreinsa kortaleit","map_search_hide":"Fela kortaleit","map_search_show":"Sýna kortaleit","map_slider_back":"Sýna kort fyrir fyrri tímabil","map_slider_forward":"Sýna kort fyrir seinni tímabil","map_year_slider":"Ár","map_zoom_home":"Endurstilla á sjálfgefinn aðdrátt","map_zoom_in":"Þysja inn","map_zoom_out":"Þysja út","national_metadata":"Innlend lýsigögn","national_metadata_blurb":"Þessi tafla sýnir lýsigögn fyrir þann mælikvarða sem er fáanlegur úr íslenskum gögnum og er líkastur alþjóðlegum heimsmarkmiðamælikvarða Sameinuðu þjóðanna. Vinsamlegast takið eftir að jafnvel þótt alþjóðlegur heimsmarkmiðamælikvarði Sameinuðu þjóðanna sé aðgengilegur úr íslenskum gögnum, ber að hafa þessa töflu til hliðsjónar fyrir upplýsingar um innlenda aðferðarfræði og önnur íslensk lýsigögn","next":"Næsti mælikvarði","no_data_hint":"Engir valmöguleikar í boði vegna síunar","no_headline_data":"Engin gögn tiltæk","previous":"Fyrri mælikvarði","select_all":"Velja allt","series":"Samfelld röð","series_help":"Veljið flokka úr valmyndinni að neðan til að sjá mismunandi sundurliðun gagna. Sumir verða ekki aðgengilegir fyrr en yfirflokkur hefur verið valinn.","source":"Heimild","sources":"Heimildir","status":"Staða mælikvarða","sub_categories":"Undirflokkar","sub_categories_show":"Sýna undirflokka:","table":"Tafla","table_column_sort":"Smelltu til að raða eftir dálkum","tags":"Merki","total":"Alls","unit":"Tegund einingar","unit_of_measurement":"Eining","units_type":"Eining","variable_hint":"Í boði þegar '%field' er valið","view_indicator_list":"Sjá mælikvarða þessa markmiðs"};</script>
+
+<script>translations['data'] = {"% Covered at 12 months old":"% Þáttaka við 12 mánaða aldur","% Covered at 12 years old":"% Þáttaka við 12 ára aldur","% Covered at 14 years old":"% Þáttaka við 14 ára aldur","% Covered at 3 months old":"% Þáttaka við 3 mánaða aldur","% Covered at 4 years old":"% Þáttaka við 4 ára aldur","% Covered at 5 months old":"% Þáttaka við 5 mánaða aldur","% Covered at 6 months old":"% Þáttaka við 6 mánaða aldur","% Covered at 8 months old":"% Þáttaka við 8 mánaða aldur","15 - 19 years":"15 - 19 ára","16 years":"16 ára","17 years":"17 ára","1st quantile":"Fyrsti tekjufimmtungur","1st quartile":"Fyrsti tekjufjórðungur","2 Mbit/s to less than 10 Mbit/s":"2 Mbit/s til minna en 10 Mbit/s","256 kbit/s to less than 2 Mbit/s":"256 kbit/s til minna en 2 Mbit/s","2nd quantile":"Annar tekjufimmtungur","2nd quartile":"Annar tekjufjórðungur","3rd quantile":"Þriðji tekjufimmtungur","3rd quartile":"Þriðji tekjufjórðungur","4th quantile":"Fjórði tekjufimmtungur","4th quartile":"Fjórði tekjufjórðjungur","5th quantile":"Fimmti tekjufimmtungur","<18 years":"<18 ára","A - Agriculture, forestry and fishing":"A - Landbúnaður, skógrækt og fiskveiðar","Above-ground biomass stock in forest [ton/ha]":"Skógarlífmassi ofanjarðar [ton/ha]","Accommodation (55)":"Gistiþjónusta (55)","Accomodation and food services (I)":"Rekstur gististaða og veitingarekstur (I)","Accounts":"Bókhald","Adult":"Fullorðinn","Age":"Aldur","Age group":"Aldurshópur","Age-group":"Aldurshópur","Agricultural products":"Landbúnaðarvörur","Agriculture":"Landbúnaður","Agriculture (01)":"Landbúnaður (01)","All":"Öll","All products":"Allar vörutegundir","Area of Spending Category":"Útgjaldaliður","Arms":"Vopn","Attainment at age 15":"Lágmarksfærni við 15 ára aldur","Attainment at age 9":"Lágmarksfærni við 9 ára aldur","B - Mining and quarrying":"B - Námugröftur og vinnsla hráefna úr jörðu","Biomedical scientists":"Lífeindafræðingar","Biota":"Lífríki","Birds":"Fuglar","Board of Directors":"Stjórnarmenn","Both":"Bæði","Branches of commercial banks":"Fjöldi viðskiptabankaútibúa","C - Manufacturing":"C - Framleiðsla","C. Manufacturing":"C. Framleiðsla","C: 10-12 Manufacture of food products, beverages and tobacco products":"C: 10-12 Matvæla- og drykkjavöruiðnaður; tóbaksiðnaður","C: 10-12 Thereof Fish processing":"C: 10-12 Þaraf Fiskvinnsla","C: 13-15 Manufacture of textiles, wearing apparel and leather products":"C: 13-15 Textíl-, fata- og leðuriðnaður","C: 16-17 Manufacture of wood and paper products":"C: 16-17 Trjá- og pappírsiðnaður","C: 18 Printing and reproduction of recorded media":"C: 18 Prentun og fjölföldun upptekins efnis","C: 19 Manufacture of coke and refined petroleum products":"C: 19 Framleiðsla á koksi og hreinsuðum olíuvörum","C: 20-21 Manufacture of chemicals, chemical products, basic pharmaceutical products and pharmaceutical preparations":"C: 20-21 Framleiðsla á efnum og efnavörum og á lyfjum og efnum til lyfjagerðar","C: 22 Manufacture of rubber and plastic products":"C: 22 Framleiðsla á gúmmí- og plastvörum","C: 23 Manufacture of other non-metallic mineral products":"C: 23 Framleiðsla á vörum úr málmlausum steinefnum","C: 24 Manufacture of basic metals":"C: 24 Framleiðsla málma","C: 25 Manufacture of fabricated metal products, except machinery and equipment":"C: 25 Framleiðsla á málmvörum, að undanskildum vélum og búnaði","C: 26 Manufacture of computer, electronic and optical products":"C: 26 Framleiðsla á tölvu-, rafeinda- og optískum vörum","C: 27 Manufacture of electrical equipment":"C: 27 Framleiðsla á rafbúnaði og heimilistækjum","C: 28 Manufacture of machinery and equipment n.e.c.":"C: 28 Framleiðsla á öðrum ótöldum vélum og tækjum","C: 29 Manufacture of motor vehicles, trailers and semi-trailers":"C: 29 Framleiðsla á vélknúnum ökutækjum og tengivögnum","C: 30 Manufacture of other transport equipment":"C: 30 Framleiðsla annarra farartækja","C: 31-32 Manufacture of furniture; other manufacturing":"C: 31-32 Framleiðsla á húsgögnum, innréttingum og vörum til lækninga; önnur framleiðsla","C: 33 Repair and installation of machinery and equipment":"C: 33 Viðgerðir og uppsetning vélbúnaðar og tækja","Cancer":"Krabbamein","Capacity":"Flokkur","Capital Region":"Höfuðborgarsvæðið","Cardiovascular disease":"Hjarta- og æðasjúkdómar","Category":"Flokkur","Category 1":"Flokkur 1","Category 2":"Flokkur 2","Category 3":"Flokkur 3","Category 4":"Flokkur 4","Category 5":"Flokkur 5","Cause of death":"Dánarmein","Chairmen":"Stjórnarformenn","Chemical":"Efnaeitrun","Chronic respiratory disease":"langvinnir öndunarfærasjúkdómar","Clerks (4)":"Skrifstofufólk (4)","Clothing":"Föt","Communications skills":"Samskiptafærni","Compulsory school":"Grunnskóli","Condition":"Næringarfræðilegt ástand","Connection type":"Tegund tengingu","Convention":"Umhverfissamningur","Coordination":"Samhæfing","Craft and related workers (7)":"Iðnaðarmenn og sérhæft iðnverkafólk (7)","D - Electricity and power generation":"D - Rafmagns-, gas- og hitaveitur","DMC per GDP [kilotonnes per MISK]":"DMC á verga landsframleiðslu [Kílótonn per milljón ISK]","DMC per capita [kilotonnes per person]":"DMC á íbúa [Kílótonn á íbúa]","DTP & Polio revaccination at 14 years old":"DTP og Pólíó endurbólusetning","DTP revaccination at 4 years old":"DTP endurbólusetning","DTP, Polio, HIB":"Barnaveiki, Stífkrampi, kíkhósti (DTP), lömunarveiki og Haemofilus influenzae b","Dental Surgery Assistants":"Tanntæknar og aðstoðarfólk tannlækna","Dental hygienists":"Tannfræðingar","Dentist":"Tannlæknar","Dentists":"Tannlæknar","Developing":"Þróunarlönd","Diabetes":"Sykursýki","Director of governmental agencies":"Forstöðumenn ríkisstofnana","Disease":"Sjúkdómur","Disposal":"Fargað","Domestic Material Consumption (DMC) [Kilotonnes]":"Innlend efnisnotkun (DMC) [Kílótonn]","E - Water collection, waste management and remediation activities":"E - Vatnsveita, fráveita, meðhöndlun úrgangs og afmengun","Edible food":"Matur","Edible food and inedible waste":"Matur og óætur úrgangur","Education":"Menntun","Education (P)":"Fræðslustarfsemi (P)","Education Category":"Tegund náms","Electricity, gas, steam, and air conditioning supply (D)":"Rafmagns-, gas- og hitaveitur (D)","Elementary occupations (9)":"Ósérhæft starfsfólk (9)","Energy":"Orka","Energy Source":"Uppruni","Enterprises":"Fyrirtæki","Environmental health officers":"Heilbrigðisfulltrúar","Equal to or above 10 Mbit/s":"Jafnt eða yfir 10 Mbit/s","Exam. pharmacists":"Aðstoðarlyfjafræðingar","Expenditure":"Útgjöld","F - Construction":"F - Byggingastarfsemi og mannvirkjagerð","Fatal":"Banvænt","Fatal/non-fatal":"Banvænt/óbanvænt","Female":"Kona","Females":"Konur","Financial and insurance activities (K)":"Fjármála- og vátryggingastarfsemi (K)","Financing":"Fjármögnun forvarna","Food and beverage service (56)":"Veitingaþjónusta (56)","Food safety":"Matvælaöryggi","Foreign":"Erlent","Forest < 5m":"Skógur < 5m","Forest > 5m":"Skógur > 5m","Forest area annual net change (%)":"Árleg breyting í skógþekju (%)","Forest area under independantely verified forest management certification schemes [1000 ha]":"Skógar í vottaðri og sjálfbærri skógarstjórnun [1000 ha]","Formal":"Formlegt","Full-time":"Fullvinnandi","G - Trade and repair of mechanical equipment":"G - Heild og smásöluverslun, viðgerðir á vélknúnum ökutækjum","Gender":"Kyn","General, machine and specialized workers":"Verkafólk","Geothermal":"Jarðhiti","Government institutions (excluding universities)":"Rannsóknarstofnanir (að undanskildum háskólum)","Grants":"Fjárframlög","Group":"Hópur","H - Tranportation and storage":"H - Flutningur og geymsla","Hate crimes recorded by police":"Hatursglæpir sem skráðir eru hjá lögreglu","Health":"Heilbrigðismál","Health Emergency Framework":"Innlend aðgerðaráætlun vegna neyðartilvika","Health Service Provision":"Aðgengi heilbrigðisþjónustu","Health institutions (86)":"Heilbrigðisstofnanir (86)","Household":"Heimili","Households":"Heimili","Human health and social work activities (Q)":"Heilbrigðis- og félagsþjónusta (Q)","Human resources":"Mannauður","Hydro":"Vatnsafl","I - Accommodation and food services activities":"I - Rekstur gististaða og veitingarekstur","Icelandic":"Íslenskt","Income":"Tekjur","Income group":"Tekjuhópur","Income/expenditure":"Tekjur/útgjöld","Index":"Jöfnuðarvísir","Indicator":"Mælikvarði","Industrial Processes":"Iðnaðarferlar","Industrial products":"Iðnaðarvörur","Industry category":"Atvinnugrein","Infection prevention and control (IPC)":"Smitvarnir","Information and communication (J)":"Upplýsingar og fjarskipti (J)","Information skills":"Upplýsingafærni","International Bank for Reconstruction and Development":"Alþjóðabankinn (IBRD)","International Finanace Corporation":"Alþjóða lánastofnunin (IFC)","International Monetary Fund":"Alþjóðagjaldeyrissjóðurinn (IMF)","J - Information and communication":"J - Upplýsingar og fjarskipti","K - Financial and insurance activities":"K - Fjármála og vátryggingastarfsemi","Kg per person":"Kg á íbúa","L - Real estate activities":"L - Fasteignaviðskipti","Laboratory":"Greiningargeta","Lakes and reservoirs":"Vötn og uppistöðulón","Land use, land-use change and forestry":"Landnotkun, breyting á landnotkun og skógrækt","Least developed":"Minnst þróuðu ríkin","Legislation":"Löggjöf","Level of government":"Stjórnarstig","Liquid assets to short-term liabilities":"Hlutfall lausaeigna við skammtímaskuldbindingar.","Living condition":"Húsnæðisaðstæður","Local government":"Sveitarstjórnir","M - Professional, scientific and technical activities":"M - Sérfræðileg, vísindaleg og tæknileg starfsemi","MISK per capita":"Millj. kr á íbúa","MMR":"Mislingar, hettusótt, rauðir hundar (MMR)","MMR revaccination":"MMR endurbólusetning","Male":"Karl","Males":"Karlar","Mammals":"Spendýr","Managers":"Framkvæmdarstjórar","Managers (1)":"Stjórnendur (1)","Manufacture of bakery and farinaceous products (10.7)":"Framleiðsla bökunarvara (10.7)","Manufacture of beverages (11)":"Framleiðsla drykkjavara (11)","Manufacture of dairy products (10.5)":"Framleiðsla mjólkurvara (10.5)","Manufacture of oil and fat (10.4)":"Framleiðsla olíu og feiti (10.4)","Manufacture of other food products (10.8)":"Framleiðsla annara matvæla (10.8)","Manufacturing (C)":"Framleiðsla (C)","Math":"Stærðfræði","Math attainment at age 15":"Reiknifærni við 15 ára aldur","Meat processing (03)":"Kjötvinnsla (03)","Meat processing (10.1)":"Kjötvinnsla (10.1)","Medical doctors":"Læknar","Meningococcal C vaccine":"Meningókokkar C","Midwives":"Ljósmæður","Moderate or Severe":"Nokkurt og alvarlegt","Most-favoured-nation status":"Bestukjaraákvæði","N - Administrative and support service activities":"N - Leigustarfsemi og ýmis sérhæfð þjónusta","National Health Emergency Framework":"Innlend aðgerðaráætlun vegna neyðartilvika","Nationality":"Þjóðerni","Net open position in foreign exchange to capital":"Munur á erlendum eignum og skuldbindingum.","Never smoked":"Aldrei reykt","Non-Formal":"Óformlegt","Non-binary/Other":"Kynsegin/annað","Nonperforming loans net of provisions to capital":"Hlutfall útlána í vanskilum af niðurfellingum lána.","Nonperforming loans to total gross loans":"Útlán í vanskilum sem hlutfall af heildar lánveitingum.","Number of Automated Teller Machines (ATMs)":"Fjöldi hraðbanka","Nurse":"Hjúkrunarfræðingar","Nurses":"Hjúkrunarfræðingar","Nursing and midwifery personnel":"Hjúkrunarfræðingar og ljósmæður","Nursing homes (87)":"Öldrunarheimili (87)","O - Public administration and defence; compulsory social security":"O - Opinber stjórnsýsla og varnarmál; almannatryggingar","Obese":"Offita","Occupational therapists":"Iðjuþjálfar","Oil":"Olía","Organization":"Stofnun","Other (glaciers etc.)":"Annað (jöklar o.fl.)","Other revenue":"Aðrar tekjur","Overcrowding":"Þéttbýli","Overweight":"Ofþyngd","P - Education":"P - Fræðslustarfsemi","Parliment":"Alþingi","Part-time":"Hlutastarfsfólk","Participation rate in  non-formal education":"Þáttökuhlutfall í óformlegu námi","Participation rate in formal education":"Þáttökuhlutfall í formlegu námi","Percentage (%) of GDP":"Hlutfall (%) af vergri landsframleiðslu","Percentage (%) of Gross Domestic Product (GDP)":"Hlutfall (%) af vergri þjóðarframleiðslu (GDP)","Percentage (%) of national budget":"Hlutfall af heildarútgjöldum hins opinbera","Percentage of GDP":"Hlutfall (%) af vergri þjóðarframleiðslu","Percentage of all hazardous waste":"Hlutfall alls hættulegs úrgangs","Percentage of fuel imports":"Hlutfall (%) af eldsneytisinnflutningi","Perpetrator":"Gerandi","Pharmacist":"Lyfjafræðingar","Pharmacists":"Lyfjafræðingar","Pharmacy technicians":"Lyfjatæknar","Physical assault":"Líkamlegt ofbeldi","Physical violence":"Líkamlegt ofbeldi","Physician":"Læknar","Physicians and surgeons":"Læknar","Physiotherapists":"Sjúkraþjálfarar","Plant and machine operators and assemblers (8)":"Véla- og vélgæslufólk (8)","Pneumococcal Vaccine":"Pneumókokkar","Points of entry":"Landamæri","Poor housing conditions":"Lélegt ástand húsnæðis","Position":"Staða","Practical nurses":"Sjúkraliðar","Preferential Status":"Ívílnunarkjör","Preparedness":"Viðbúnaður","Preschools":"Leikskóli","Primary homeless":"Útigangsfólk","Private sector":"Almennur vinnumarkaður","Problem solving skills":"Lausnarfærni","Processing of fruit and vegetables (10.3)":"Ávaxta- og grænmetisvinnsla (10.3)","Professionals (2)":"Sérfræðingar (2)","Proportion of forest area located within legally established protected areas [%]":"Hlutfall skóglendis innan friðaðra svæða [%]","Proportion of forest area under long-term forest management plan [%]":"Hlutfall skóglendis í langtíma skógstýringu [%]","Proprietary pharmacists":"Lyfsalar","Prosecuted":"Lögsótt","Public administration and defence; compulsory social sec. (O)":"Opinber stjórnsýsla og varnarmál; almannatryggingar (O)","Public sector, central government":"Opinberir starfsmenn - ríkisstarfsmenn","Public sector, local government":"Opinberir starfsmenn - starfsmenn sveitarfélaga","Public sector, total":"Opinberir starfsmenn","Q - Human health and social work activities":"Q - Heilbrigðis og félagsþjónusta","Quit smoking":"Hætt að reykja","R - Arts, entertainment and recreation":"R - Menningar, íþrjótta og tómstundastarfsemi","Radiographers":"Geislafræðingar","Radionuclear":"Geislavarnir","Reading":"Lestur","Reading attainment at age 15":"Lestrarfærni við 15 ára aldur","Reading attainment at age 9":"Lestrarfærni við 9 ára aldur","Recovery":"Endurheimt","Region":"Landshluti","Regulatory Tier 1 capital to assets":"Eigið fé sem hlutfall af eignum samkvæmt reglugerðarflokki 1.","Regulatory Tier 1 capital to risk- weighted assets":"Eigið fé sem hlutfall af áhættuvegnum eignum samkvæmt reglugerðarflokki 1.","Response":"Viðbragðsgeta","Retail (47)":"Smásala (47)","Return on assets":"Arðsemi eigna.","Revenue":"Tekjur","Risk communication":"Áhættumiðlun","Rivers and Estuaries":"Ár og árósar","S - Other services activities":"S - Félagasamtök og önnur þjónustustarfsemi","Same age":"Jafnaldri","Secondary homeless":"Fólk í húsnæðishraki","Sector":"Atvinnugrein","Sentenced":"Sakfellt","Service":"Þjónusta","Service workers and shop and market sales workers (5)":"Þjónustu-, sölu- og afgreiðslufólk (5)","Severe only":"Bara alvarlegt","Severity":"Alvarleiki","Sex":"Kyn","Sexual assault":"Kynferðislegt ofbeldi","Sexual violence":"Kynferðislegt ofbeldi","Skill":"Þekking","Smoke daily":"Reyki daglega","Smoke less frequently than daily":"Reyki sjaldnar en daglega","Social Protection":"Félagsvernd","Social contributions":"Tryggingagjöld","Social workers":"Félagsráðgjafar","Software":"Hugbúnaðarfærni","Source":"Uppspretta","Status":"Staða","Sub-indicator.":"Hlutvísir","Supply chain":"Fyrirtæki","Surveillance":"Eftirlit","Tax revenue":"Skattekjur","Technicians and associate professionals (3)":"Tæknar og sérmenntað starfsfólk (3)","Tertiary education institutions":"Háskólastofnanir","Textiles":"Vefnaðarvara","Thereof Fish processing":"Þar af Fiskvinnsla","Tonne per capita":"Tonn á íbúa","Tonnes":"Tonn","Total":"Alls","Total - excluding public administration (O)":"Alls - án opinberrar stjórnsýslu (O)","Total Forest cover":"Heildar skógþekja","Transportation and storage (H)":"Flutningar og geymsla (H)","Type":"Tegund","Type of Occupation":"Starfsgrein","Type of Product":"Vörutegund","Type of Violence":"Tegund ofbeldis","Type of skill":"Tegund færni","Type of treatment":"Meðhöndlun","Type of violence":"Tegund ofbeldis","U - Activities of extraterritorial organisations and bodies":"U - Starfsemi stofnana og samtaka með úrlendisrétt","UN Econonomic and Social Council":"Efnahags- og félagsmálaráð Sameinuðu Þjóðanna (UN ECOSOC)","UN General Assembly":"Alsherjaþing Sameinuðu Þjóðanna (UNGA)","Under 15 years":"Yngri en 15 ára","Unit":"Eining","Units type":"Einingar","Vaccine":"Bóluefni","Vaccine - participation":"Þáttaka í bólusetningu","Value":"Gildi","Vascular Plants":"Plöntur","Waste":"Úrgangur","Waste origin":"Uppruni úrgangs","Waste type":"Tegund úrgangs","Wetlands":"Votlendi","Wholesale (46)":"Heildsala (46)","Wholesale and retail (46 and 47)":"Heildsala og smásala (46 og 47)","Wholesale and retail trade; repair of motor vehicles (G)":"Heild- og smásöluverslun, viðgerðir á vélknúnum ökutækjum (G)","Wind":"Vindafl","World Trade Organization":"Alþjóðaviðskiptastofnunin (WTO)","X31 Exposure to excessive natural cold":"X31 Berskjöldun fyrir náttúrulegum ofurkulda","X36 Victim of avalanche, landslide and other earth movements":"X36 Fórnarlamb snjóflóðs, skriðu og annarar tilfærslu jarðvegs","Year":"Ár","Zoonosis":"Smit milli manna og dýra","non-fatal":"Óbanvænt","sex":"Kyn"};</script>
+
+
+<div class="container">
+  
+<nav>
+    <ol aria-label="breadcrumb" class="breadcrumb" style="--bs-breadcrumb-divider: '&rsaquo;';">
+        
+        <li class="breadcrumb-item">
+            <a href="/heimsmarkmid-site/">Heim</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="/heimsmarkmid-site/goals">Markmiðin</a>
+        </li>
+        
+        <li class="breadcrumb-item">
+            <a href="/heimsmarkmid-site/8"
+               title="Markmið 8 - Góð atvinna og hagvöxtur"
+               aria-label="Markmið  - ">
+               Markmið 8
+            </a>
+        </li>
+        
+    </ol>
+</nav>
+
+
+  
+</div>
+<div class="heading goal-banner indicator goal-8">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-4 col-md-3 col-lg-2 goal-icon goal-tiles">
+                <a href="/heimsmarkmid-site/8" aria-label="Skoða undirmarkmið og mælikvarða fyrir hvert heimsmarkmið 8" title="Skoða undirmarkmið og mælikvarða fyrir hvert heimsmarkmið 8">
+                    <img src="https://hagstofan.github.io/heimsmarkmid-translations/assets/img/goals/is/8.png"
+                        alt="Góð atvinna og hagvöxtur - Markmið 8"
+                        id="goal-8"
+                        class="goal-icon-image goal-icon-image-" />
+                </a>
+            </div>
+            <div class="col-8 col-md-9 col-lg-10 indicator-details">
+            
+                <div>
+                    <h1>
+                        
+                        Mælikvarði 8.9.2
+                        
+                        <span class="lead-copy">Employed persons in the tourism industries</span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="main-content" class="container goal-8" role="main">
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+
+<div class="row"
+  id="indicatorData"
+  data-indicatorid='indicator_8-9-2'
+  data-id="8-9-2"
+  data-country="Iceland"
+  data-charttitle="Employed persons in the tourism industries"
+  data-charttitles="null"
+  data-measurementunit=""
+  data-xaxislabel=""
+  data-showdata="false"
+  data-graphtype="line"
+  data-graphtypes="null"
+  data-geocoderegex=""
+  data-showmap=""
+  data-startvalues="null"
+  data-graphlimits="null"
+  data-stackeddisaggregation=""
+  data-graphannotations="null"
+  data-graphtargetlines="null"
+  data-graphseriesbreaks="null"
+  data-indicatordownloads="null"
+  data-dataschema="{&quot;fields&quot;:[{&quot;name&quot;:&quot;Year&quot;,&quot;type&quot;:&quot;number&quot;,&quot;title&quot;:&quot;Ár&quot;},{&quot;name&quot;:&quot;Value&quot;,&quot;type&quot;:&quot;number&quot;,&quot;title&quot;:&quot;Gildi&quot;}]}"
+  data-compositebreakdownlabel=""
+  data-precision="null"
+>
+  
+  <div id="indicator-main" class="indicator-main col-md-12">
+  
+  <div class="mt-4">
+<ul class="nav nav-tabs" role="tablist">
+    
+    
+        
+        
+        
+        
+        <li role="presentation" class="nav-item">
+            <button
+                type="button"
+                class="nav-link active"
+                data-bs-toggle="tab"
+                id="tab-national"
+                data-bs-target="#national"
+                aria-controls="national"
+                role="tab"
+                data-on="click"
+data-event-category="Tab change"
+data-event-action="Change metadata view"
+data-event-label="Change to indicator.national_metadata tab"
+
+            >Innlend lýsigögn</button>
+        </li>
+    
+        
+        
+        
+        
+        <li role="presentation" class="nav-item">
+            <button
+                type="button"
+                class="nav-link "
+                data-bs-toggle="tab"
+                id="tab-global"
+                data-bs-target="#global"
+                aria-controls="global"
+                role="tab"
+                data-on="click"
+data-event-category="Tab change"
+data-event-action="Change metadata view"
+data-event-label="Change to indicator.global_metadata tab"
+
+            >Alþjóðleg lýsigögn</button>
+        </li>
+    
+        
+        
+        
+        
+        <li role="presentation" class="nav-item">
+            <button
+                type="button"
+                class="nav-link "
+                data-bs-toggle="tab"
+                id="tab-sources"
+                data-bs-target="#sources"
+                aria-controls="sources"
+                role="tab"
+                data-on="click"
+data-event-category="Tab change"
+data-event-action="Change metadata view"
+data-event-label="Change to indicator.sources tab"
+
+            >Heimildir</button>
+        </li>
+    
+    
+    
+        <li role="presentation" class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#edit" aria-controls="edit" role="tab">Breyta</a>
+        </li>
+    
+</ul>
+
+<div class="tab-content">
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div role="tabpanel" class="tab-pane active" id="national">
+            <article>
+                <p>Þessi tafla sýnir lýsigögn fyrir þann mælikvarða sem er fáanlegur úr íslenskum gögnum og er líkastur alþjóðlegum heimsmarkmiðamælikvarða Sameinuðu þjóðanna. Vinsamlegast takið eftir að jafnvel þótt alþjóðlegur heimsmarkmiðamælikvarði Sameinuðu þjóðanna sé aðgengilegur úr íslenskum gögnum, ber að hafa þessa töflu til hliðsjónar fyrir upplýsingar um innlenda aðferðarfræði og önnur íslensk lýsigögn</p>
+
+                <table class="table metadata-content">
+  <tbody>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+            </article>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div role="tabpanel" class="tab-pane " id="global">
+            <article>
+                <p>Þessi tafla sýnir lýsigögn fyrir heimsmarkmiðamælikvarða eins og þeir eru skilgreindir af tölfræðistofnun Sameinuðu þjóðanna. <a href="https://unstats.un.org/sdgs/metadata/"> Fullbúin alþjóðleg lýsigögn </a> eru fáanleg frá tölfræðistofnun Sameinuðu þjóðanna</p>
+
+                <table class="table metadata-content">
+  <tbody>
+  
+  
+  
+  
+  
+      
+      
+      
+      
+      <tr>
+        <th scope="row">Heiti mælikvarða </th>
+        <td>
+          
+            <p>Employed persons in the tourism industries</p>
+
+          
+        </td>
+        </tr>
+        
+      
+  
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+      
+      
+      
+        
+          
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </tbody>
+</table>
+
+            </article>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div role="tabpanel" class="tab-pane " id="sources">
+            <article>
+                
+                <!-- Count the non-empty sources (up to 5) -->
+
+
+
+
+
+            </article>
+        </div>
+        
+    
+    
+        <div role="tabpanel" class="tab-pane" id="edit">
+            <div class="edit-container">
+  
+  
+
+  
+  
+
+
+  <a class="btn btn-primary" href="https://prose.io/#hagstofan/heimsmarkmid-data/edit/working/data/indicator_8-9-2.csv">Breyta gögnum</a>
+  
+
+  
+  <a class="btn btn-primary" href="https://prose.io/#hagstofan/heimsmarkmid-data/edit/develop/meta/8-9-2.md">Breyta lýsigögnum</a>
+  
+
+  
+  <a class="btn btn-primary" href="config">Breyta stillingum</a>
+  
+
+</div>
+
+        </div>
+    
+</div>
+
+</div>
+  </div>
+</div>
+
+  <a href="#top">Aftur upp</a>
+</div>
+
+<footer class="hagstofa">
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <img
+                        src="//hagstofas3bucket.hagstofa.is/haxdev/static/img/hagstofa_white_logo_2023.png"
+                        alt="Hagstofa Íslands"
+                    />
+                    <ul>
+                      <li id="footer-phone-number">
+                        <span class="footer-icon-span"><i class="picon-simanumer"></i></span>
+                        <a href="tel:+354 528 1000">
+                          <b>528 1000</b>
+                        </a>
+                      </li>
+                      <li>
+                        <span class="footer-icon-span"><i class="picon-heimilisfang"></i></span>Borgartún 21A, 105 Reykjavík
+                      </li>
+                      <li>
+                        <span class="footer-icon-span"><i class="picon-opnunartimi"></i></span>Mán-fim kl. 9.00-16.00 / Fös kl. 9.00-12.00
+                      </li>
+                      <li>
+                        <span class="footer-icon-span">
+                          <i class="picon-netfang"></i>
+                        </span><a href="mailto:upplysingar@hagstofa.is">upplysingar@hagstofa.is</a>
+                      </li>
+                    </ul>
+
+                    <div id="footer-social-media">
+                      <a target="_blank" href="https://facebook.com/hagstofan">
+                        <i class="picon-facebook"></i>
+                      </a>
+                      <a target="_blank" href="https://x.com/hagstofan">
+                        <i class="picon-twitter"></i>
+                      </a>
+                      <a target="_blank" href="https://www.instagram.com/hagstofan">
+                        <i class="picon-instagram"></i>
+                      </a>
+                      <a target="_blank" href="https://www.linkedin.com/company/hagstofa-islands">
+                        <i class="picon-linkedin"></i>
+                      </a>
+                      <a target="_blank" href="https://www.youtube.com/@hagstofaislands2013">
+                        <i class="picon-youtube"></i>
+                      </a>
+                      <a target="_blank" href="https://www.hagstofa.is/utgafur/frettasafn/rss-frettaveita/">
+                        <i class="picon-rss"></i>
+                      </a>
+                    </div>
+
+                    <a id="footer-creative-commons" href="https://hagstofa.is/utgafur/opid-gagnaadgengi/">
+                      <i class="picon-cc"></i>
+                      <i class="picon-by"></i>
+                      <i>Opið gagnaaðgengi</i>
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="certs" class="hide-small-screen">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <img
+                        src="http://haxdev.s3.amazonaws.com/static/img/statice_all_certs.png"
+                        alt="Hagstofa Íslands vottanir"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</footer><script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="//cdn.datatables.net/fixedcolumns/3.2.3/js/dataTables.fixedColumns.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js" integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js" integrity="sha256-Y26AMvaIfrZ1EQU49pf6H4QzVTrOI8m9wQYKkftBt4s=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/patternomaly@1.3.2/dist/patternomaly.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.3/dist/html2canvas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.2/dist/FileSaver.min.js"></script>
+
+
+
+
+
+
+
+<script>translations['general'] = translations['general'] || {};
+    translations['general']['hide'] = 'Fela';</script>
+
+<script>translations['search'] = translations['search'] || {};
+    translations['search']['search'] = 'Leit';</script>
+
+<script src='/heimsmarkmid-site/assets/js/sdg.js?v=20250506163430'></script>
+
+
+    
+    
+    <script src="/heimsmarkmid-site/assets/js/custom.js?v=20250506163430"></script><script>
+    new indicatorInit();
+    new accessibilitySwitcher();
+</script>
+<script>
+$(document).ready(function() {
+    makeStatsCatsNavCloseable();
+
+    semiOpenStatsNav();
+
+    var dropdownItems = document.querySelectorAll('#header-main-webtree li.dropdown');
+    dropdownItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            closeStatsNav();
+        });
+    });
+
+    offcanvasResize();
+
+    $('html').on('click', '.menu-toggle, .canvas-open .body-slide', function(e) {
+        e.preventDefault();
+        $('body').toggleClass('canvas-open');
+    });
+
+    $('.offcanvas .offcanvas-subopen').on('click', function(e) {
+        e.preventDefault();
+        $(this).parent().parent().addClass('open');
+        $(this).parents('ul').addClass('back');
+    });
+
+    $('.offcanvas .offcanvas-subback').on('click', function(e) {
+        e.preventDefault();
+        $(this).closest('.open').removeClass('open');
+        $(this).closest('.back').removeClass('back');
+    });
+
+    $('.offcanvas').show().css('display', 'flex');
+
+    $(window).on('resize', function() {
+        offcanvasResize();
+    });
+});
+
+function offcanvasResize() {
+    var height = 0;
+    var windowHeight = $(window).height();
+    var headerHeight = 79;
+    var bottomButtonsHeight = 112;
+
+    $('.offcanvas').css('height', windowHeight - headerHeight - bottomButtonsHeight);
+}
+
+function semiOpenStatsNav() {
+    document.getElementById('open-statistics-nav').classList.add('selected');
+    document.getElementById('statistics-category-nav').style.display = 'block';
+}
+
+function toggleOpenStatsNav() {
+    var navButton = document.getElementById('open-statistics-nav');
+    if (navButton.classList.contains('open')) {
+        closeStatsNav();
+    } else {
+        openStatsNav();
+    }
+}
+
+function closeStatsNav() {
+    var navList = document.getElementById('statistics-category-nav');
+    var navButton = document.getElementById('open-statistics-nav');
+    navButton.classList.remove('open');
+    navList.style.boxShadow = null;
+}
+
+function openStatsNav() {
+    var navList = document.getElementById('statistics-category-nav');
+    var navButton = document.getElementById('open-statistics-nav');
+    navButton.classList.add('open');
+    navList.style.boxShadow = '0 12px 4px -7px #00000029';
+    navList.style.display = 'block';
+}
+
+function makeStatsCatsNavCloseable() {
+    var tabLinks = document.querySelectorAll('#statistics-category-nav ul.custom-nav-tabs a');
+    var lis = document.querySelectorAll('#statistics-category-nav ul.custom-nav-tabs li');
+    var tabPanes = document.querySelectorAll('.custom-tab-pane');
+
+    closeAllTabsAndHighlightCurrentCategory();
+
+    tabLinks.forEach(function(tabLink) {
+        tabLink.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            var target = document.querySelector(tabLink.getAttribute('href'));
+            removeClassFromSiblings(target, 'show');
+            target.classList.toggle('show');
+
+            var parentLi = tabLink.parentNode;
+            removeClassFromSiblings(parentLi, "active");
+
+            if (!target.classList.contains('show')) {
+                closeAllTabsAndHighlightCurrentCategory();
+            } else {
+                lis.forEach(function(li) {
+                    li.classList.add('greyed-out');
+                });
+
+                parentLi.classList.remove('greyed-out');
+                parentLi.classList.add('active');
+            }
+        });
+    });
+
+    function removeClassFromSiblings(element, className) {
+        var parent = element.parentNode;
+        var siblings = parent.children;
+        for (let i = 0; i < siblings.length; i++) {
+            if (siblings[i] !== element) {
+                siblings[i].classList.remove(className);
+            }
+        }
+    }
+
+    function closeAllTabsAndHighlightCurrentCategory() {
+        tabPanes.forEach(function(tabPane) {
+            tabPane.classList.remove('show');
+        });
+
+        lis.forEach(function(li) {
+            li.classList.remove('active', 'greyed-out');
+        });
+    }
+
+    document.addEventListener('click', function(event) {
+        var target = event.target;
+        if (!target.closest('#statistics-category-nav')) {
+            closeAllTabsAndHighlightCurrentCategory();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key == 'Escape') {
+            closeAllTabsAndHighlightCurrentCategory();
+        }
+    });
+}
+
+</script>
+<script src='//hagstofas3bucket.hagstofa.is/haxdev/static/js/bootstrap.min.js'
+        type="text/javascript"></script>
+
+
+</body></html>
+
